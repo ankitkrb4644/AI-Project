@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coding Tip of the Day</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    /* Background with floating orbs + gradient animation */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea, #764ba2, #ff7eb3);
+        background-size: 400% 400%;
+        animation: gradientShift 12s ease infinite;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        overflow: hidden;
+    }
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    /* Floating orb effect */
+    .orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(50px);
+        opacity: 0.6;
+        animation: float 20s infinite;
+    }
+    .orb1 { width: 300px; height: 300px; background: #ff7eb3; top: -100px; left: -100px; animation-delay: 0s; }
+    .orb2 { width: 250px; height: 250px; background: #667eea; bottom: -120px; right: -100px; animation-delay: 5s; }
+    .orb3 { width: 200px; height: 200px; background: #764ba2; top: 50%; left: 50%; animation-delay: 10s; }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0) translateX(0); }
+        50% { transform: translateY(-50px) translateX(30px); }
+    }
+
+    .app-container {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 40px;
+        max-width: 600px;
+        width: 100%;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: transform 0.3s ease;
+        z-index: 2;
+        position: relative;
+    }
+    .app-container:hover { transform: translateY(-5px); }
+
+    .header { margin-bottom: 30px; }
+    .title {
+        font-size: 2.5em;
+        font-weight: bold;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 10px;
+        display: inline-block;
+        overflow: hidden;
+        border-right: .15em solid #764ba2;
+        white-space: nowrap;
+        animation: typing 3s steps(30, end), blink-caret .75s step-end infinite;
+    }
+    @keyframes typing { from { width: 0 } to { width: 100% } }
+    @keyframes blink-caret {
+        from, to { border-color: transparent }
+        50% { border-color: #764ba2 }
+    }
+
+    .subtitle { color: #666; font-size: 1.1em; }
+
+    .tip-container {
+        background: #f8f9fa;
+        border-radius: 15px;
+        padding: 30px;
+        margin: 30px 0;
+        border-left: 5px solid #667eea;
+        text-align: left;
+        transition: all 0.3s ease;
+    }
+    .tip-container:hover {
+        box-shadow: 0 0 20px rgba(102, 126, 234, 0.6), 0 0 40px rgba(118, 75, 162, 0.5);
+        transform: translateY(-2px);
+    }
+
+    .tip-category {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 0.8em;
+        font-weight: bold;
+        display: inline-block;
+        margin-bottom: 15px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .tip-title { font-size: 1.4em; font-weight: bold; color: #333; margin-bottom: 15px; }
+    .tip-content { color: #555; line-height: 1.6; font-size: 1.1em; margin-bottom: 15px; }
+
+    .tip-code {
+        background: #2d3748;
+        color: #e2e8f0;
+        padding: 15px;
+        border-radius: 8px;
+        font-family: 'Courier New', monospace;
+        font-size: 0.9em;
+        overflow-x: auto;
+        margin: 15px 0;
+        border: 1px solid #4a5568;
+        position: relative;
+    }
+    .copy-btn {
+        background: transparent;
+        border: none;
+        color: #fff;
+        cursor: pointer;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 0.9em;
+        opacity: 0.7;
+        transition: opacity 0.3s ease;
+    }
+    .copy-btn:hover { opacity: 1; }
+
+    .buttons { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 25px;
+        font-size: 1em;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        animation: pulse 2s infinite;
+    }
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #5a67d8, #6b46c1);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+    .btn-secondary {
+        background: transparent;
+        color: #667eea;
+        border: 2px solid #667eea;
+    }
+    .btn-secondary:hover {
+        background: #667eea;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .stats {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #e2e8f0;
+    }
+    .stat-item { text-align: center; }
+    .stat-number { font-size: 1.8em; font-weight: bold; color: #667eea; }
+    .stat-label { color: #666; font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px; }
+
+    .difficulty { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+    .difficulty-label { font-weight: bold; color: #555; }
+    .difficulty-stars { display: flex; gap: 2px; }
+    .star {
+        width: 16px;
+        height: 16px;
+        background: #ddd;
+        clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    }
+    .star.filled { background: #ffd700; }
+
+    .fade-in { animation: fadeIn 0.5s ease-in; }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+</head>
+<body>
+
+<!-- Floating Orbs -->
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+<div class="app-container">
+    <div class="header">
+        <h1 class="title">💡 Coding Tips</h1>
+        <p class="subtitle">Enhance your coding skills one tip at a time</p>
+    </div>
+
+    <div class="tip-container fade-in" id="tipContainer">
+        <div class="tip-category" id="tipCategory"></div>
+        <h2 class="tip-title" id="tipTitle"></h2>
+        <p class="tip-content" id="tipContent"></p>
+        <div class="tip-code">
+            <button class="copy-btn" onclick="copyCode()">📋 Copy</button>
+            <code id="codeContent"></code>
+        </div>
+        <div class="difficulty">
+            <span class="difficulty-label">Difficulty:</span>
+            <div class="difficulty-stars" id="difficultyStars"></div>
+        </div>
+    </div>
+
+    <div class="buttons">
+        <button class="btn btn-primary" onclick="getNewTip()">New Tip</button>
+        <button class="btn btn-secondary" onclick="toggleFavorite(event)">⭐ Favorite</button>
+        <button class="btn btn-secondary" onclick="shareTip()">📤 Share</button>
+    </div>
+
+    <div class="stats">
+        <div class="stat-item">
+            <div class="stat-number" id="tipsViewed">1</div>
+            <div class="stat-label">Tips Viewed</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number" id="favorites">0</div>
+            <div class="stat-label">Favorites</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number" id="streak">1</div>
+            <div class="stat-label">Day Streak</div>
+        </div>
+    </div>
+</div>
+
+<script>
+const codingTips = [
+    {
+        category: "JavaScript",
+        title: "Use Template Literals for String Interpolation",
+        content: "Template literals (backticks) make string interpolation cleaner.",
+        code: `const message = \`Hello, \${name}! You have \${count} messages.\`;`,
+        difficulty: 1
+    },
+    {
+        category: "Python",
+        title: "Use List Comprehensions",
+        content: "List comprehensions create lists in a clean, compact way.",
+        code: `squares = [i*i for i in range(10)]`,
+        difficulty: 1
+    },
+    {
+        category: "Java",
+        title: "Use StringBuilder for Efficiency",
+        content: "StringBuilder is more efficient for multiple string concatenations.",
+        code: `StringBuilder sb = new StringBuilder(); sb.append("Hello").append(" World");`,
+        difficulty: 2
+    },
+    {
+        category: "HTML/CSS",
+        title: "Use Semantic HTML Tags",
+        content: "Tags like <header>, <main>, and <footer> improve SEO and accessibility.",
+        code: `<header>My Site</header>`,
+        difficulty: 1
+    },
+    {
+        category: "Git",
+        title: "Use Git Stash",
+        content: "Temporarily save changes without committing using git stash.",
+        code: `git stash save "WIP: feature-x"`,
+        difficulty: 2
+    },
+    {
+        category: "JavaScript",
+        title: "Use Array.map()",
+        content: "map() transforms an array into a new one without modifying the original.",
+        code: `const doubled = numbers.map(n => n * 2);`,
+        difficulty: 1
+    },
+    {
+        category: "Python",
+        title: "Use enumerate()",
+        content: "enumerate() gives both index and value when looping.",
+        code: `for idx, val in enumerate(my_list): print(idx, val)`,
+        difficulty: 1
+    },
+    {
+        category: "Java",
+        title: "Use try-with-resources",
+        content: "Automatically closes resources when done.",
+        code: `try (BufferedReader br = new BufferedReader(new FileReader(path))) { ... }`,
+        difficulty: 2
+    },
+    {
+        category: "CSS",
+        title: "Use CSS Variables",
+        content: "CSS variables make theme updates easier.",
+        code: `:root { --main-color: #667eea; } body { color: var(--main-color); }`,
+        difficulty: 1
+    },
+    {
+        category: "JavaScript",
+        title: "Use Destructuring",
+        content: "Destructuring extracts object or array values into variables.",
+        code: `const {name, age} = person;`,
+        difficulty: 1
+    }
+];
+
+let currentTipIndex = 0;
+let stats = { tipsViewed: 1, favorites: 0, streak: 1 };
+
+function displayTip(tip) {
+    document.getElementById('tipCategory').textContent = tip.category;
+    document.getElementById('tipTitle').textContent = tip.title;
+    document.getElementById('tipContent').textContent = tip.content;
+    document.getElementById('codeContent').textContent = tip.code;
+
+    const starsContainer = document.getElementById('difficultyStars');
+    starsContainer.innerHTML = '';
+    for (let i = 0; i < 3; i++) {
+        const star = document.createElement('div');
+        star.className = `star ${i < tip.difficulty ? 'filled' : ''}`;
+        starsContainer.appendChild(star);
+    }
+
+    const container = document.getElementById('tipContainer');
+    container.classList.remove('fade-in');
+    setTimeout(() => container.classList.add('fade-in'), 10);
+}
+
+function getNewTip() {
+    let newIndex;
+    do {
+        newIndex = Math.floor(Math.random() * codingTips.length);
+    } while (newIndex === currentTipIndex);
+    currentTipIndex = newIndex;
+    displayTip(codingTips[currentTipIndex]);
+    stats.tipsViewed++;
+    updateStats();
+}
+
+function toggleFavorite(event) {
+    const btn = event.target;
+    if (btn.dataset.active === "true") {
+        btn.dataset.active = "false";
+        btn.style.background = 'transparent';
+        btn.style.color = '#667eea';
+        stats.favorites = Math.max(0, stats.favorites - 1);
+    } else {
+        btn.dataset.active = "true";
+        btn.style.background = 'linear-gradient(135deg, #ffd700, #ff8c00)';
+        btn.style.color = 'white';
+        stats.favorites++;
+    }
+    updateStats();
+}
+
+function shareTip() {
+    const tip = codingTips[currentTipIndex];
+    const shareText = `💡 Coding Tip: ${tip.title}\n\n${tip.content}\n\n${tip.code}`;
+    if (navigator.share) {
+        navigator.share({ title: 'Coding Tip of the Day', text: shareText });
+    } else {
+        navigator.clipboard.writeText(shareText).then(() => {
+            alert('Tip copied to clipboard!');
+        });
+    }
+}
+
+function copyCode() {
+    const codeText = document.getElementById('codeContent').textContent;
+    navigator.clipboard.writeText(codeText).then(() => {
+        alert('Code copied to clipboard!');
+    });
+}
+
+function updateStats() {
+    document.getElementById('tipsViewed').textContent = stats.tipsViewed;
+    document.getElementById('favorites').textContent = stats.favorites;
+    document.getElementById('streak').textContent = stats.streak;
+}
+
+displayTip(codingTips[currentTipIndex]);
+</script>
+</body>
+</html>
