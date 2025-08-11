@@ -39,8 +39,8 @@ Both projects are built using:
 - **CSS3** – Styling, animations, responsiveness
 - **JavaScript (ES6)** – Functionality, DOM manipulation, event handling
 
-  [Typing Rush](file:///C:/Users/KIIT/Downloads/typing_test.html)  
-  [Code Tips](file:///C:/Users/KIIT/Downloads/code_tips.html)
+  [Typing Rush](https://ankitkrb4644.github.io/AI-Project/)
+  [Code Tips](https://claude.ai/public/artifacts/dede4628-8b8a-4f02-8cd7-2198dda50624)
 
 
 ---
