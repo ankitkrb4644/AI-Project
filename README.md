@@ -1,31 +1,46 @@
-## Coding Tip of the Day – AI Enhanced
+# 💡 Code Tips & ⚡ Typing Rush
 
-This project is a simple HTML, CSS, and JavaScript web application that provides daily coding tips.  
-It now includes AI integration to fetch tips dynamically, giving users fresh and personalized advice.
+A collection of two interactive web-based mini-projects built with **HTML**, **CSS**, and **JavaScript**.
 
-### Features
-- 🎯 Displays a **random coding tip** each time you click the "Get Tip" button  
-- 🤖 AI-powered to **generate** new, context-aware coding tips  
-- 🎨 Modern and responsive design with an attractive gradient background  
+---
 
-### Technologies Used
-- **HTML5** – Structure of the application  
-- **CSS3** – Styling and background design  
-- **JavaScript (Vanilla)** – Interactivity and tip generation logic  
-- **AI API** – Fetches personalized coding tips  
+## 📂 Projects Overview
 
-### How to Use
-1. Clone or download this repository  
-2. Open the `index.html` file in any modern web browser  
-3. Click **"Get Tip"** to receive a new coding tip instantly  
+### 1️⃣ Code Tips
+An elegant web app that displays random coding tips from various languages and topics.
 
-### Future Enhancements
-- 🌐 Add API-based tip sources from GitHub Gists or tech blogs  
-- 💾 Save favorite tips to local storage  
-- 📱 Create a mobile-friendly PWA version
+#### ✨ Features:
+- 🎯 **Category-based tips** (JavaScript, Python, Java, HTML/CSS, Git, etc.)
+- ⭐ Mark tips as favorite
+- 🔄 Get new random tips
+- 📋 Copy code snippets with one click
+- 📤 Share tips with friends
+- 📊 Tracks tips viewed, favorites, and streaks
+- ✨ Animated gradient background & floating orb effects
 
-  [Typing_Rush](https://your-username.github.io/your-repo-name/Typing_Test.html)
+---
 
+### 2️⃣ Typing Rush
+A fun and engaging typing speed game with real-time statistics.
+
+#### ✨ Features:
+- ⏳ **60-second challenge timer**
+- 📈 Live WPM & accuracy tracking
+- 🎮 Difficulty levels: Easy, Medium, Hard
+- 📊 Progress bar animation
+- 🔄 Reset & restart options
+- 🎨 Smooth UI animations & gradient backgrounds
+
+---
+
+## 🛠 Tech Stack
+Both projects are built using:
+- **HTML5** – Structure
+- **CSS3** – Styling, animations, responsiveness
+- **JavaScript (ES6)** – Functionality, DOM manipulation, event handling
+
+  [Typing_Rush](file:///C:/Users/KIIT/Documents/java%20code/AI%20Project/Typing_Test.html)
+  [Code_Tips](file:///C:/Users/KIIT/Documents/java%20code/AI%20Project/Code_tips.html)
 
 ---
 💡 *Tip:* Consistency in learning is more important than long, irregular sessions.
