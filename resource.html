@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource Link Manager</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .add-form {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        input[type="text"], input[type="url"], textarea, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input[type="text"]:focus, input[type="url"]:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+
+        textarea {
+            resize: vertical;
+            height: 80px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn-edit {
+            background: linear-gradient(45deg, #feca57, #ff9ff3);
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+
+        .data-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .search-filter {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-input {
+            min-width: 250px;
+        }
+
+        .filter-select {
+            min-width: 150px;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .resource-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #f0f0f0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .resource-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .resource-name {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+            word-break: break-word;
+        }
+
+        .resource-url {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 10px;
+            display: block;
+            word-break: break-all;
+            transition: color 0.3s ease;
+        }
+
+        .resource-url:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .resource-description {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .resource-category {
+            display: inline-block;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .resource-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+            grid-column: 1 / -1;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: #999;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 15px 25px;
+            border-radius: 15px;
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-filter {
+                justify-content: center;
+            }
+
+            .stats {
+                gap: 15px;
+            }
+
+            .stat-item {
+                min-width: 100px;
+                padding: 12px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 Resource Manager</h1>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number" id="totalResources">0</div>
+                <div class="stat-label">Total Resources</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="totalCategories">0</div>
+                <div class="stat-label">Categories</div>
+            </div>
+        </div>
+
+        <div class="add-form">
+            <h2 style="margin-bottom: 20px; color: #333;">Add New Resource</h2>
+            <form id="resourceForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="resourceName">Resource Name *</label>
+                        <input type="text" id="resourceName" required placeholder="e.g. MDN Web Docs">
+                    </div>
+                    <div class="form-group">
+                        <label for="resourceUrl">URL *</label>
+                        <input type="url" id="resourceUrl" required placeholder="https://example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="resourceCategory">Category</label>
+                        <select id="resourceCategory">
+                            <option value="Development">Development</option>
+                            <option value="Design">Design</option>
+                            <option value="Learning">Learning</option>
+                            <option value="Tools">Tools</option>
+                            <option value="Documentation">Documentation</option>
+                            <option value="Reference">Reference</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="resourceDescription">Description</label>
+                    <textarea id="resourceDescription" placeholder="Brief description of this resource..."></textarea>
+                </div>
+                <button type="submit" class="btn" id="submitBtn">Add Resource</button>
+                <button type="button" class="btn btn-danger" id="cancelBtn" style="display: none; margin-left: 10px;">Cancel</button>
+            </form>
+        </div>
+
+        <div class="controls">
+            <div class="search-filter">
+                <input type="text" id="searchInput" placeholder="Search resources..." class="search-input">
+                <select id="filterCategory" class="filter-select">
+                    <option value="">All Categories</option>
+                </select>
+            </div>
+            <div class="data-controls">
+                <button class="btn" id="exportBtn">📥 Export Data</button>
+                <button class="btn" id="importBtn">📤 Import Data</button>
+                <input type="file" id="fileInput" accept=".json" style="display: none;">
+                <button class="btn btn-danger" id="clearAllBtn">Clear All</button>
+            </div>
+        </div>
+
+        <div class="resources-grid" id="resourcesGrid">
+            <div class="empty-state">
+                <h3>No resources yet!</h3>
+                <p>Add your first resource using the form above.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let resources = [];
+        let editingId = null;
+
+        // Simulated backend storage
+        const BackendStorage = {
+            // Simulate saving to backend
+            save: function(data) {
+                console.log('💾 Saving to backend...', data);
+                // In a real backend, this would be an API call
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        console.log('✅ Data saved successfully to backend');
+                        resolve(true);
+                    }, 500);
+                });
+            },
+
+            // Simulate loading from backend
+            load: function() {
+                console.log('📡 Loading from backend...');
+                // In a real backend, this would be an API call
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        // Try to load from stored data first
+                        const storedData = this.getStoredData();
+                        console.log('✅ Data loaded from backend', storedData);
+                        resolve(storedData);
+                    }, 300);
+                });
+            },
+
+            // Store data in memory (simulating backend persistence)
+            storedData: null,
+
+            getStoredData: function() {
+                return this.storedData || [];
+            },
+
+            setStoredData: function(data) {
+                this.storedData = data;
+            }
+        };
+
+        // Auto-save functionality
+        function autoSave() {
+            BackendStorage.setStoredData([...resources]);
+            BackendStorage.save(resources).then(() => {
+                showNotification('💾 Auto-saved successfully!');
+            });
+        }
+
+        // Show notification
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#4CAF50' : '#f44336'};
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                z-index: 1000;
+                font-weight: 600;
+                animation: slideIn 0.3s ease;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Export data to JSON file
+        function exportData() {
+            const dataStr = JSON.stringify({
+                resources: resources,
+                exportDate: new Date().toISOString(),
+                version: '1.0'
+            }, null, 2);
+            
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `resources-backup-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            showNotification('📥 Data exported successfully!');
+        }
+
+        // Import data from JSON file
+        function importData(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    
+                    if (importedData.resources && Array.isArray(importedData.resources)) {
+                        if (resources.length > 0) {
+                            if (confirm('This will replace all current resources. Are you sure?')) {
+                                resources = importedData.resources;
+                                autoSave();
+                                renderResources();
+                                updateStats();
+                                updateCategoryFilter();
+                                showNotification('📤 Data imported successfully!');
+                            }
+                        } else {
+                            resources = importedData.resources;
+                            autoSave();
+                            renderResources();
+                            updateStats();
+                            updateCategoryFilter();
+                            showNotification('📤 Data imported successfully!');
+                        }
+                    } else {
+                        showNotification('❌ Invalid file format!', 'error');
+                    }
+                } catch (error) {
+                    showNotification('❌ Error reading file!', 'error');
+                    console.error('Import error:', error);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // Load resources from backend on page load
+        async function loadResources() {
+            showNotification('📡 Loading your resources...', 'info');
+            try {
+                const loadedResources = await BackendStorage.load();
+                resources = loadedResources;
+                renderResources();
+                updateStats();
+                updateCategoryFilter();
+                if (resources.length > 0) {
+                    showNotification(`✅ Loaded ${resources.length} resources!`);
+                }
+            } catch (error) {
+                console.error('Error loading resources:', error);
+                showNotification('❌ Error loading resources', 'error');
+            }
+        }
+
+        // Save resource
+        function saveResource(resource) {
+            if (editingId !== null) {
+                const index = resources.findIndex(r => r.id === editingId);
+                if (index !== -1) {
+                    resources[index] = { ...resource, id: editingId };
+                }
+                editingId = null;
+                document.getElementById('submitBtn').textContent = 'Add Resource';
+                document.getElementById('cancelBtn').style.display = 'none';
+            } else {
+                resource.id = Date.now();
+                resources.push(resource);
+            }
+            renderResources();
+            updateStats();
+            updateCategoryFilter();
+            autoSave(); // Auto-save after adding/editing
+        }
+
+        // Delete resource
+        function deleteResource(id) {
+            if (confirm('Are you sure you want to delete this resource?')) {
+                resources = resources.filter(r => r.id !== id);
+                renderResources();
+                updateStats();
+                updateCategoryFilter();
+                autoSave(); // Auto-save after deletion
+            }
+        }
+
+        // Edit resource
+        function editResource(id) {
+            const resource = resources.find(r => r.id === id);
+            if (resource) {
+                document.getElementById('resourceName').value = resource.name;
+                document.getElementById('resourceUrl').value = resource.url;
+                document.getElementById('resourceCategory').value = resource.category;
+                document.getElementById('resourceDescription').value = resource.description || '';
+                
+                editingId = id;
+                document.getElementById('submitBtn').textContent = 'Update Resource';
+                document.getElementById('cancelBtn').style.display = 'inline-block';
+                
+                // Scroll to form
+                document.querySelector('.add-form').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Cancel edit
+        function cancelEdit() {
+            editingId = null;
+            document.getElementById('resourceForm').reset();
+            document.getElementById('submitBtn').textContent = 'Add Resource';
+            document.getElementById('cancelBtn').style.display = 'none';
+        }
+
+        // Render resources
+        function renderResources() {
+            const grid = document.getElementById('resourcesGrid');
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const categoryFilter = document.getElementById('filterCategory').value;
+
+            let filteredResources = resources.filter(resource => {
+                const matchesSearch = resource.name.toLowerCase().includes(searchTerm) || 
+                                    resource.description.toLowerCase().includes(searchTerm) ||
+                                    resource.url.toLowerCase().includes(searchTerm);
+                const matchesCategory = !categoryFilter || resource.category === categoryFilter;
+                return matchesSearch && matchesCategory;
+            });
+
+            if (filteredResources.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <h3>${resources.length === 0 ? 'No resources yet!' : 'No matching resources found'}</h3>
+                        <p>${resources.length === 0 ? 'Add your first resource using the form above.' : 'Try adjusting your search or filter criteria.'}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filteredResources.map(resource => `
+                <div class="resource-card">
+                    <div class="resource-category">${resource.category}</div>
+                    <div class="resource-name">${resource.name}</div>
+                    <a href="${resource.url}" target="_blank" rel="noopener" class="resource-url">${resource.url}</a>
+                    ${resource.description ? `<div class="resource-description">${resource.description}</div>` : ''}
+                    <div class="resource-actions">
+                        <button class="btn btn-edit" onclick="editResource(${resource.id})">Edit</button>
+                        <button class="btn btn-danger" onclick="deleteResource(${resource.id})" style="padding: 6px 12px; font-size: 14px;">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Update stats
+        function updateStats() {
+            document.getElementById('totalResources').textContent = resources.length;
+            const categories = new Set(resources.map(r => r.category));
+            document.getElementById('totalCategories').textContent = categories.size;
+        }
+
+        // Update category filter
+        function updateCategoryFilter() {
+            const select = document.getElementById('filterCategory');
+            const categories = new Set(resources.map(r => r.category));
+            
+            // Keep the "All Categories" option and add unique categories
+            select.innerHTML = '<option value="">All Categories</option>' + 
+                Array.from(categories).sort().map(cat => 
+                    `<option value="${cat}">${cat}</option>`
+                ).join('');
+        }
+
+        // Event listeners
+        document.getElementById('resourceForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            console.log('Form submitted'); // Debug log
+            
+            const nameInput = document.getElementById('resourceName');
+            const urlInput = document.getElementById('resourceUrl');
+            const categoryInput = document.getElementById('resourceCategory');
+            const descriptionInput = document.getElementById('resourceDescription');
+            
+            const resource = {
+                name: nameInput.value.trim(),
+                url: urlInput.value.trim(),
+                category: categoryInput.value,
+                description: descriptionInput.value.trim()
+            };
+
+            console.log('Resource data:', resource); // Debug log
+
+            if (resource.name && resource.url) {
+                saveResource(resource);
+                this.reset();
+                console.log('Resource saved successfully'); // Debug log
+            } else {
+                console.log('Validation failed - name or URL missing'); // Debug log
+                alert('Please fill in both the name and URL fields.');
+            }
+        });
+
+        // Also add click event listener as backup
+        document.getElementById('submitBtn').addEventListener('click', function(e) {
+            console.log('Submit button clicked'); // Debug log
+            // The form submit event should handle this, but this is a backup
+        });
+
+        document.getElementById('cancelBtn').addEventListener('click', cancelEdit);
+
+        document.getElementById('searchInput').addEventListener('input', renderResources);
+        document.getElementById('filterCategory').addEventListener('change', renderResources);
+
+        document.getElementById('clearAllBtn').addEventListener('click', function() {
+            if (resources.length === 0) return;
+            
+            if (confirm('Are you sure you want to delete all resources? This action cannot be undone.')) {
+                resources = [];
+                renderResources();
+                updateStats();
+                updateCategoryFilter();
+                autoSave(); // Auto-save after clearing
+            }
+        });
+
+        // Export/Import event listeners
+        document.getElementById('exportBtn').addEventListener('click', exportData);
+        
+        document.getElementById('importBtn').addEventListener('click', function() {
+            document.getElementById('fileInput').click();
+        });
+        
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                importData(file);
+            }
+            // Reset file input
+            this.value = '';
+        });
+
+        // Add CSS animations for notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            
+            @keyframes slideOut {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize
+        loadResources();
+    </script>
+</body>
+</html>
