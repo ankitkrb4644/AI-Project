@@ -29,7 +29,7 @@ Each application is built with an emphasis on performance, responsiveness, and m
 - Clean and responsive user interface
 - Suitable for developers across experience levels
 
-**Live Demo:** [Launch Application](#) *(https://ankitkrb4644.github.io/AI-Project/Project_2/)*
+**Live Demo:** (https://ankitkrb4644.github.io/AI-Project/Project_2/)
 
 ---
 
@@ -44,6 +44,6 @@ Each application is built with an emphasis on performance, responsiveness, and m
 - Persistent storage using the Local Storage API
 - Optimized for desktop and mobile devices
 
-**Live Demo:** [Launch Application](#) *(https://ankitkrb4644.github.io/AI-Project/Project_3/)*
+**Live Demo:** (https://ankitkrb4644.github.io/AI-Project/Project_3/)
 
 ---
