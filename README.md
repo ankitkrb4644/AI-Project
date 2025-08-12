@@ -15,7 +15,7 @@ Each application is built with an emphasis on performance, responsiveness, and m
 - Instant display of results
 - Responsive design for multiple device types
 
-**Live Demo:** [Launch Application](#) *(https://ankitkrb4644.github.io/AI-Project/Project_1/)*
+**Live Demo:** (https://ankitkrb4644.github.io/AI-Project/Project_1/)
 
 ---
 
